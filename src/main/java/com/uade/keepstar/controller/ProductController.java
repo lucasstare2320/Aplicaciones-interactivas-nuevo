@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.keepstar.entity.dto.ProductRequest;
@@ -14,7 +15,7 @@ import com.uade.keepstar.exceptions.CategoryNotFoundException;
 import com.uade.keepstar.exceptions.UserNotFoundException;
 import com.uade.keepstar.service.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -28,8 +29,8 @@ public class ProductController {
     public List<ProductResponse> getProducts(){
         return productService.getProducts();
     }
-    @GetMapping("{id}")
-    public ProductResponse getIDList(@RequestBody Long id){
+    @GetMapping("/{id}")
+    public ProductResponse getIDList(@PathVariable Long id){
         return productService.getIDList(id);
     }
 
