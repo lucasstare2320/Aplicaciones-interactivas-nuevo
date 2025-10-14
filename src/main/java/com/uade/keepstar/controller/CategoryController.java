@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.keepstar.entity.dto.CategoryRequest;
 import com.uade.keepstar.entity.dto.CategoryResponse;
-import com.uade.keepstar.entity.dto.ProductResponse;
+
 import com.uade.keepstar.service.CategoryService;
 
 
