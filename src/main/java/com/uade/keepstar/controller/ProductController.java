@@ -14,7 +14,7 @@ import com.uade.keepstar.exceptions.CategoryNotFoundException;
 import com.uade.keepstar.exceptions.UserNotFoundException;
 import com.uade.keepstar.service.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 

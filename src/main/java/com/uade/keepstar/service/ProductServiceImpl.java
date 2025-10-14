@@ -48,11 +48,13 @@ public class ProductServiceImpl implements ProductService {
         if (!user.isPresent()) {
             throw new UserNotFoundException();
         }
+
         Product product = productRepository.save(Product.builder()
         .name(request.getName())
         .description(request.getDescription())
         .price(request.getPrice())
         .stock(request.getStock())
+        .seller(user.get())
         .category(category.get()).build()
         );
         return new ProductResponse(product);
