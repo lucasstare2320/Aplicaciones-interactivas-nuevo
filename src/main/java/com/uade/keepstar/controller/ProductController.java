@@ -24,16 +24,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @GetMapping("products")
+    @GetMapping
     public List<ProductResponse> getProducts(){
         return productService.getProducts();
     }
-    @GetMapping("products/{id}")
+    @GetMapping("{id}")
     public ProductResponse getIDList(@RequestBody Long id){
         return productService.getIDList(id);
     }
 
-    @PostMapping("products")
+    @PostMapping
     public ProductResponse crearProduct(@RequestBody ProductRequest request) throws CategoryNotFoundException, UserNotFoundException {
         return productService.crearProducto(request);
     }
