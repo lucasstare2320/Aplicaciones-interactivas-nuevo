@@ -40,7 +40,7 @@ public class ProductController {
         return productService.crearProducto(request);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ProductResponse actualizarProduct(@PathVariable Long id,
             @RequestBody ProductRequest request)
             throws CategoryNotFoundException, UserNotFoundException, ProductNotFoundException {
