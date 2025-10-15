@@ -125,7 +125,6 @@ public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long 
             changed = true;
         }
 
-        // Category (por ID)
         if (request.getCategoryId() != null) {
             Category newCat = categoryRepository.findById(request.getCategoryId())
                     .orElseThrow(CategoryNotFoundException::new);
@@ -136,7 +135,6 @@ public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long 
             }
         }
 
-        // Seller (por ID)
         if (request.getSellerId() != null) {
             User newSeller = userRepository.findById(request.getSellerId())
                     .orElseThrow(UserNotFoundException::new);

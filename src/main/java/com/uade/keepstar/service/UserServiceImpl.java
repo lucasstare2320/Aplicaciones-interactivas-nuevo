@@ -1,28 +1,32 @@
 package com.uade.keepstar.service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.uade.keepstar.entity.Role;
 import com.uade.keepstar.entity.User;
 import com.uade.keepstar.entity.dto.LoginRequest;
 import com.uade.keepstar.entity.dto.UserRequest;
 import com.uade.keepstar.entity.dto.UserResponse;
 import com.uade.keepstar.exceptions.UnauthorizedException;
+import com.uade.keepstar.exceptions.UserNotFoundException;
 import com.uade.keepstar.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
-    public UserResponse registerUser(UserRequest request) {
+    private void validateUserRequest(UserRequest request) {
         if (request.getEmail() == null || request.getEmail().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email is mandatory");
         }
@@ -46,6 +50,13 @@ public class UserServiceImpl implements UserService {
         if (optional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "username already exists");    
         }
+    }
+
+    @Override
+    public UserResponse registerUser(UserRequest request) {
+                
+        validateUserRequest(request);
+        
         User user = userRepository.save(User.builder()
             .email(request.getEmail())
             .firstName(request.getFirstName())
@@ -67,5 +78,54 @@ public class UserServiceImpl implements UserService {
         return new UserResponse(user.get());
     }
 
+    @Override
+    public List<UserResponse> getUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    public UserResponse getUserById(Long id) throws UserNotFoundException {
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+        return new UserResponse(user);
+    }
+
+
+    @Override
+    @Transactional
+    public UserResponse actualizarUser(Long id, UserRequest request) throws UserNotFoundException {
+        User existing = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+
+        boolean changed = false;
+
+        if (request.getUsername() != null && !Objects.equals(existing.getUsername(), request.getUsername())) {
+            existing.setUsername(request.getUsername());
+            changed = true;
+        }
+        if (request.getEmail() != null && !Objects.equals(existing.getEmail(), request.getEmail())) {
+            existing.setEmail(request.getEmail());
+            changed = true;
+        }
+        if (request.getFirstName() != null && !Objects.equals(existing.getFirstName(), request.getFirstName())) {
+            existing.setFirstName(request.getFirstName());
+            changed = true;
+        }
+        if (request.getLastName() != null && !Objects.equals(existing.getLastName(), request.getLastName())) {
+            existing.setLastName(request.getLastName());
+            changed = true;
+        }
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            existing.setPassword(request.getPassword());
+            changed = true;
+        }
+
+        if (changed) {
+            userRepository.save(existing);
+        }
+        return new UserResponse(existing);
+    }
 }
