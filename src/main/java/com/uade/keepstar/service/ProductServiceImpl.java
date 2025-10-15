@@ -28,12 +28,17 @@ public class ProductServiceImpl implements ProductService {
     @Autowired private UserRepository userRepository;
 
 @Override
-public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long categoryId) {
+public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long categoryId) throws ProductNotFoundException {
     boolean noFilters = (minPrice == null && maxPrice == null && categoryId == null);
     if (noFilters) {
-        return productRepository.findAll().stream()
+
+        List<ProductResponse > products =  productRepository.findAll().stream()
                 .map(ProductResponse::of)
                 .toList();
+                if (products.isEmpty()) {
+                    throw new ProductNotFoundException ();
+                }
+                return products;
     }
 
     if (minPrice != null && maxPrice != null && minPrice > maxPrice) {
@@ -42,9 +47,13 @@ public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long 
         maxPrice = temp;
     }
 
-    return productRepository.findByOptionalFilters(minPrice, maxPrice, categoryId).stream()
+    List<ProductResponse> products =  productRepository.findByOptionalFilters(minPrice, maxPrice, categoryId).stream()
             .map(ProductResponse::of)
             .toList();
+            if (products.isEmpty()) {
+                throw new ProductNotFoundException ();
+            }
+            return products;
 }
 
 

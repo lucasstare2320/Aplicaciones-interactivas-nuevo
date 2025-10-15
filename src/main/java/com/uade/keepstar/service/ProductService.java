@@ -10,7 +10,7 @@ import com.uade.keepstar.exceptions.UserNotFoundException;
 
 public interface ProductService {
 
-    List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long categoryId);
+    List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long categoryId) throws ProductNotFoundException;
 
     ProductResponse getIDList(Long id) throws ProductNotFoundException;
 

@@ -24,7 +24,7 @@ public class ProductController {
         @RequestParam(required = false) Double minPrice,
         @RequestParam(required = false) Double maxPrice,
         @RequestParam(required = false) Long categoryId
-    ) {
+    ) throws ProductNotFoundException {
         return productService.getProducts(minPrice, maxPrice, categoryId);
     }
 

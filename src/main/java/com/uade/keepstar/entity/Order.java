@@ -25,6 +25,9 @@ public class Order {
     @Builder.Default
     private List<OrderItem> items = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
     public void addItem(OrderItem item) {
         items.add(item);
         item.setOrder(this);

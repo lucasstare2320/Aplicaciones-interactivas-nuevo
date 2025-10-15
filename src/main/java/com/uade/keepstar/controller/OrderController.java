@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.uade.keepstar.entity.dto.OrderRequest;
 import com.uade.keepstar.entity.dto.OrderResponse;
 import com.uade.keepstar.exceptions.ProductNotFoundException;
+import com.uade.keepstar.exceptions.ProductWithoutException;
 import com.uade.keepstar.exceptions.UserNotFoundException;
 import com.uade.keepstar.service.OrderService;
 
@@ -36,7 +37,7 @@ public class OrderController {
 
     @PostMapping
     public OrderResponse crearOrder(@RequestBody OrderRequest request)
-            throws ProductNotFoundException, UserNotFoundException {
+            throws ProductNotFoundException, UserNotFoundException, ProductWithoutException {
         return orderService.crearOrder(request);
     }
 }

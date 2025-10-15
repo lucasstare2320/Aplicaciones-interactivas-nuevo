@@ -7,4 +7,5 @@ import lombok.Data;
 public class OrdenItemResquest {
     private Long productId;
     private Integer quantity;
+    
 }

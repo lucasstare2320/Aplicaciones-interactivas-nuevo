@@ -16,6 +16,7 @@ public class OrderResponse {
     private Long id;
     private Long userId;
     private List<Item> items;
+    private String status;
 
     @Data
     @AllArgsConstructor
@@ -25,10 +26,10 @@ public class OrderResponse {
         private Integer quantity;
     }
 
-    // Mapeo Entidad -> DTO
     public OrderResponse(Order order) {
         this.id = order.getId();
         this.userId = order.getUser().getId();
         this.items = order.getItems().stream().map(oi -> new Item(oi.getProduct().getId(),oi.getQuantity())).collect(Collectors.toList());
+        this.status = order.getStatus().name();
     }
 }
