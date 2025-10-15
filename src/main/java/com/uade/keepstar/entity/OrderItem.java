@@ -1,43 +1,34 @@
 package com.uade.keepstar.entity;
 
-import org.hibernate.annotations.ManyToAny;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Table(name = "order_items")
 @Data
-@Table(name = "order_item")
-@NoArgsConstructor
+@NoArgsConstructor 
 @AllArgsConstructor
-
-
 public class OrderItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private int quantity;
-
-    @ManyToAny
-    @JoinColumn (name = "product_id", nullable = false)
-    private Product product;
-
-    @ManyToAny
-    @JoinColumn (name = "order_id", nullable = false)
+    // ¡ESTE ES EL PUNTO CLAVE!
+    // Debe ser ManyToOne, no OneToMany ni ElementCollection.
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    public OrderItem(Product product, int quantity) {
-        this.product = product;
-        this.quantity = quantity;
-    }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
+    @Column(nullable = false)
+    private Integer quantity;
+
+    public OrderItem(Product product, Integer quantity) {
+        this.product = product;
+        this.quantity = (quantity == null ? 1 : quantity);
+    }
 }

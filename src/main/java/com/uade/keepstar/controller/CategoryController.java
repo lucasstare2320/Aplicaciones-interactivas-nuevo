@@ -29,7 +29,7 @@ public class CategoryController {
         return categoryService.getCategory();
         }
         @PostMapping
-        public CategoryResponse registerUser(@RequestBody CategoryRequest request) {
+        public CategoryResponse crearCategory(@RequestBody CategoryRequest request) {
         return categoryService.createCategory(request);
         }
         @GetMapping("/{id}")

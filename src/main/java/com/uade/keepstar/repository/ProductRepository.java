@@ -1,11 +1,22 @@
 package com.uade.keepstar.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import com.uade.keepstar.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-@Repository
-public interface ProductRepository extends JpaRepository <Product, Long>{
-    
+import java.util.List;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    @Query("""
+           SELECT product
+           FROM Product product
+           WHERE (:minPrice IS NULL OR product.price >= :minPrice)
+             AND (:maxPrice IS NULL OR product.price <= :maxPrice)
+             AND (:categoryId IS NULL OR product.category.id = :categoryId)
+           """)
+    List<Product> findByOptionalFilters(@Param("minPrice") Double minPrice,
+                                        @Param("maxPrice") Double maxPrice,
+                                        @Param("categoryId") Long categoryId);
 }

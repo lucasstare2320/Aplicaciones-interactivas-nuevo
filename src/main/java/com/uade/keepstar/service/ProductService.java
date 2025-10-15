@@ -8,14 +8,15 @@ import com.uade.keepstar.exceptions.CategoryNotFoundException;
 import com.uade.keepstar.exceptions.ProductNotFoundException;
 import com.uade.keepstar.exceptions.UserNotFoundException;
 
-
 public interface ProductService {
 
-    public List<ProductResponse> getProducts();
+    List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long categoryId);
 
-    public ProductResponse getIDList(Long id);
+    ProductResponse getIDList(Long id) throws ProductNotFoundException;
 
-    public ProductResponse crearProducto(ProductRequest request) throws CategoryNotFoundException, UserNotFoundException;
+    ProductResponse crearProducto(ProductRequest request)
+            throws CategoryNotFoundException, UserNotFoundException;
 
-    public ProductResponse actualizarProducto(Long id, ProductRequest request) throws CategoryNotFoundException, UserNotFoundException, ProductNotFoundException;
+    ProductResponse actualizarProducto(Long id, ProductRequest request)
+            throws CategoryNotFoundException, UserNotFoundException, ProductNotFoundException;
 }

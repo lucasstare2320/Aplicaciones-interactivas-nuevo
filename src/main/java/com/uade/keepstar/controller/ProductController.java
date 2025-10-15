@@ -3,10 +3,7 @@ package com.uade.keepstar.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.uade.keepstar.entity.dto.ProductRequest;
 import com.uade.keepstar.entity.dto.ProductResponse;
@@ -14,24 +11,25 @@ import com.uade.keepstar.exceptions.CategoryNotFoundException;
 import com.uade.keepstar.exceptions.ProductNotFoundException;
 import com.uade.keepstar.exceptions.UserNotFoundException;
 import com.uade.keepstar.service.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("products")
 public class ProductController {
+
     @Autowired
     private ProductService productService;
 
     @GetMapping
-    public List<ProductResponse> getProducts() {
-        return productService.getProducts();
+    public List<ProductResponse> getProducts(
+        @RequestParam(required = false) Double minPrice,
+        @RequestParam(required = false) Double maxPrice,
+        @RequestParam(required = false) Long categoryId
+    ) {
+        return productService.getProducts(minPrice, maxPrice, categoryId);
     }
 
     @GetMapping("/{id}")
-    public ProductResponse getIDList(@PathVariable Long id) {
+    public ProductResponse getIDList(@PathVariable Long id) throws ProductNotFoundException {
         return productService.getIDList(id);
     }
 
@@ -47,5 +45,4 @@ public class ProductController {
             throws CategoryNotFoundException, UserNotFoundException, ProductNotFoundException {
         return productService.actualizarProducto(id, request);
     }
-
 }
