@@ -234,6 +234,7 @@ const Productos = () => {
 
 
                         {/* Formulario para admin */}
+                        {/* 
                         {admin && (
                             <div className="mt-4 p-3 border border-warning rounded">
                                 <h5 className="text-warning mb-3">Agregar producto nuevo</h5>
@@ -252,7 +253,7 @@ const Productos = () => {
                                     Agregar producto
                                 </button>
                             </div>
-                        )}
+                        )}*/}
                     </aside>
 
                     {/* Listado */}
@@ -282,16 +283,7 @@ const Productos = () => {
                                 >
                                     
                                     <ProductCard product={product} onAddToCart={handleAddToCart} />
-                                    {admin && (
-                                        <div className="d-flex justify-content-between mt-2">
-                                            <button className="btn btn-sm btn-outline-warning" disabled>
-                                                Editar
-                                            </button>
-                                            <button className="btn btn-sm btn-outline-danger" disabled>
-                                                Eliminar
-                                            </button>
-                                        </div>
-                                    )}
+
 
                                 </div>
                             ))}
