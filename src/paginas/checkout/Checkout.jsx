@@ -20,6 +20,8 @@ const Checkout = () => {
     pais: "",
     telefono: "",
     discountCode: "",
+    numerotarjeta:"",
+    codigoseguridad:""
   });
 
   const [discount, setDiscount] = useState(0);
@@ -125,9 +127,31 @@ const Checkout = () => {
                 onChange={handleChange}
               />
             </div>
+            <br></br>
+            <p className="text-white mt-5">Informacion de pago</p>
+            <div className="col">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Numero tarjeta"
+                name="telefono"
+                value={shippingInfo.numerotarjeta}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="codigo de seguridad"
+                name="telefono"
+                value={shippingInfo.codigoseguridad}
+                onChange={handleChange}
+              />
+            </div>
           </div>
           <button className="btn btn-warning w-100 mt-3">
-            Continuar a Método de Pago
+            Continuar a pagar
           </button>
         </div>
 
@@ -173,22 +197,7 @@ const Checkout = () => {
               </div>
             ))}
 
-            <div className="mb-3 mt-3">
-              <input
-                type="text"
-                className="form-control mb-2"
-                placeholder="Introduce tu código"
-                name="discountCode"
-                value={shippingInfo.discountCode}
-                onChange={handleChange}
-              />
-              <button
-                className="btn btn-warning w-100"
-                onClick={handleApplyDiscount}
-              >
-                Aplicar
-              </button>
-            </div>
+
 
             <hr style={{ borderColor: "#444" }} />
             <div className="d-flex justify-content-between text-white mb-1">

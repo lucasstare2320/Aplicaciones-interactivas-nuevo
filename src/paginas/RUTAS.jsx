@@ -18,7 +18,7 @@ function RUTAS() {
     <Routes>
       <Route path='/' element={<Login/>}></Route>
       <Route path='/landingpage' element={<LandingPage></LandingPage>}></Route>
-      <Route path='/detalle' element={<ProductDetail/>}></Route>
+      <Route path='/detalle/:id' element={<ProductDetail/>}></Route>
       <Route path='/productos' element={<Productos/>}></Route>
       <Route path='/carrito' element={<Carrito/>}></Route>
       <Route path='/perfil' element={<Usuario/>}></Route>

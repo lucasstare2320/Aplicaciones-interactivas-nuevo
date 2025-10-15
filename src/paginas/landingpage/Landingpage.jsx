@@ -87,7 +87,7 @@ const LandingPage = ({ featuredProducts }) => {
     }
 
     //despues te lleva al detalle
-    navigate("/detalle")
+    navigate(`/detalle/:${product.id}`) // CAMBIAR A FUTURO por el id del producto del fetch
   };
 
 
