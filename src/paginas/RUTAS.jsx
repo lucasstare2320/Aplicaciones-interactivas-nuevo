@@ -7,6 +7,7 @@ import Productos from './productos/Productos'
 import Carrito from './carrito/Carrito'
 import Usuario from './perfil/Usuario'
 import Checkout from './checkout/Checkout'
+import Misproductos from './misproductos/misproductos'
 //este componente sirve para hacer las rutas, es decir, cambiar entre paginas sin recargar
 // se pueden poner rutas en app pero en gral me gusta en un componente separado
 
@@ -23,6 +24,7 @@ function RUTAS() {
       <Route path='/carrito' element={<Carrito/>}></Route>
       <Route path='/perfil' element={<Usuario/>}></Route>
       <Route path='/checkout' element={<Checkout/>}></Route>
+      <Route path='/misproductos' element={<Misproductos/>}></Route>
     </Routes>     
     </>
   )

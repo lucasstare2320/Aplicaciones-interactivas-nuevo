@@ -4,9 +4,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // necesario para el toggle
 import { FaShoppingCart, FaUser } from "react-icons/fa"; // íconos blancos
 import "./Navbarperfume.css";
+import { useSelector } from "react-redux";
 
 function Navbarperfume() {
   const navigate = useNavigate();
+     const admin = useSelector((state) => state.user?.admin); // obtener admin del reducer
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark sticky-top custom-navbar">
@@ -37,6 +39,18 @@ function Navbarperfume() {
         <div className="collapse navbar-collapse" id="navbarPerfume">
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
             <li className="nav-item">
+                {admin && (
+                <span onClick={() => navigate("/misproductos")}>
+                  mis productos
+                </span>
+
+              )}
+            </li>
+
+            <li className="nav-item">
+
+              
+            
               <span
                 className="nav-link"
                 onClick={() => navigate("/productos")}
