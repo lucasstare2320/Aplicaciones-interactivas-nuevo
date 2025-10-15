@@ -31,8 +31,9 @@ public class Product {
     private float price;
     @Column
     private int stock;
-    @Column
-    private boolean active;
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean active = true;
 
     @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn (name = "seller_id", nullable = false)

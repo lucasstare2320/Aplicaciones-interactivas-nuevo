@@ -33,38 +33,47 @@ public class ProductServiceImpl implements ProductService {
 public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long categoryId) throws ProductNotFoundException {
     boolean noFilters = (minPrice == null && maxPrice == null && categoryId == null);
     if (noFilters) {
+        return productRepository.findByActiveTrue().stream().map(ProductResponse::of).toList();
+        }
+    return productRepository.findByOptionalFilters(minPrice, maxPrice, categoryId)
+            .stream().map(ProductResponse::of).toList();
+}
+   
+        
+        
+        //List<ProductResponse > products =  productRepository.findAll().stream()
+        //        .map(ProductResponse::of)
+        //        .toList();
+        //        if (products.isEmpty()) {
+        //            throw new ProductNotFoundException ();
+         //       }
+          //      return products;
+    
 
-        List<ProductResponse > products =  productRepository.findAll().stream()
-                .map(ProductResponse::of)
-                .toList();
-                if (products.isEmpty()) {
-                    throw new ProductNotFoundException ();
-                }
-                return products;
-    }
+    //List<ProductResponse> products =  productRepository.findByOptionalFilters(minPrice, maxPrice, categoryId).stream()
+      //      .map(ProductResponse::of)
+        //    .toList();
+          //  if (products.isEmpty()) {
+            //    throw new ProductNotFoundException ();
+           // }
+            //return products;
 
-    if (minPrice != null && maxPrice != null && minPrice > maxPrice) {
-        double temp = minPrice;
-        minPrice = maxPrice;
-        maxPrice = temp;
-    }
-
-    List<ProductResponse> products =  productRepository.findByOptionalFilters(minPrice, maxPrice, categoryId).stream()
-            .map(ProductResponse::of)
-            .toList();
-            if (products.isEmpty()) {
-                throw new ProductNotFoundException ();
-            }
-            return products;
+@Override
+public ProductResponse getIDList(Long id) throws ProductNotFoundException {
+    var product = productRepository.findByIdAndActiveTrue(id)
+            .orElseThrow(ProductNotFoundException::new);
+    return new ProductResponse(product);
 }
 
-
-    @Override
-    public ProductResponse getIDList(Long id) throws ProductNotFoundException {
-        Product p = productRepository.findById(id)
-                .orElseThrow(ProductNotFoundException::new);
-        return new ProductResponse(p);
-    }
+@Override
+@Transactional
+public void deleteProduct(Long id) throws ProductNotFoundException {
+    var product = productRepository.findById(id)
+            .orElseThrow(ProductNotFoundException::new);
+    if (!product.isActive()) return;    
+    product.setActive(false);
+    productRepository.save(product);
+}
 
     @Override
     @Transactional
@@ -106,7 +115,6 @@ public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long 
 
         boolean changed = false;
 
-        // Campos simples
         if (request.getName() != null && !Objects.equals(existing.getName(), request.getName())) {
             existing.setName(request.getName());
             changed = true;

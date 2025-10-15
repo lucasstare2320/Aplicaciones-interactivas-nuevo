@@ -46,4 +46,9 @@ public class ProductController {
             throws CategoryNotFoundException, UserNotFoundException, ProductNotFoundException {
         return productService.actualizarProducto(id, request);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) throws ProductNotFoundException {
+    productService.deleteProduct(id);
+}
 }
