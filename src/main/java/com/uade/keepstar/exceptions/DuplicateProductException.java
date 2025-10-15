@@ -1,0 +1,10 @@
+package com.uade.keepstar.exceptions;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+
+@ResponseStatus(code = HttpStatus.CREATED, reason = "El producto ya existe")
+
+public class DuplicateProductException extends Exception {
+    
+}

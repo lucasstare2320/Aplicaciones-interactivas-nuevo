@@ -2,6 +2,7 @@ package com.uade.keepstar.service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.uade.keepstar.entity.User;
 import com.uade.keepstar.entity.dto.ProductRequest;
 import com.uade.keepstar.entity.dto.ProductResponse;
 import com.uade.keepstar.exceptions.CategoryNotFoundException;
+import com.uade.keepstar.exceptions.DuplicateProductException;
 import com.uade.keepstar.exceptions.ProductNotFoundException;
 import com.uade.keepstar.exceptions.UserNotFoundException;
 import com.uade.keepstar.repository.CategoryRepository;
@@ -67,13 +69,16 @@ public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long 
     @Override
     @Transactional
     public ProductResponse crearProducto(ProductRequest request)
-            throws CategoryNotFoundException, UserNotFoundException {
+            throws CategoryNotFoundException, UserNotFoundException, DuplicateProductException {
 
-        // Validar Category por ID (solo elige entre existentes)
+        Optional<Product > existing = productRepository.findByNameIgnoreCaseAndCategory_Id(request.getName(), request.getCategoryId());
+        if (existing.isPresent()) {
+            throw new DuplicateProductException();
+        }
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(CategoryNotFoundException::new);
 
-        // Validar vendedor
+
         User seller = userRepository.findById(request.getSellerId())
                 .orElseThrow(UserNotFoundException::new);
 

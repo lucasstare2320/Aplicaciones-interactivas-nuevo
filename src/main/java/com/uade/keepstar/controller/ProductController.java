@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.uade.keepstar.entity.dto.ProductRequest;
 import com.uade.keepstar.entity.dto.ProductResponse;
 import com.uade.keepstar.exceptions.CategoryNotFoundException;
+import com.uade.keepstar.exceptions.DuplicateProductException;
 import com.uade.keepstar.exceptions.ProductNotFoundException;
 import com.uade.keepstar.exceptions.UserNotFoundException;
 import com.uade.keepstar.service.ProductService;
@@ -35,7 +36,7 @@ public class ProductController {
 
     @PostMapping
     public ProductResponse crearProduct(@RequestBody ProductRequest request)
-            throws CategoryNotFoundException, UserNotFoundException {
+            throws CategoryNotFoundException, UserNotFoundException, DuplicateProductException {
         return productService.crearProducto(request);
     }
 
