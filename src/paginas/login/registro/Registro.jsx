@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-function Login() {
+function Registro() {
   const dispatch = useDispatch(); // esto es para redux
    const navigate = useNavigate()
   const location = useLocation() // permite saber en que ruta estamos 
@@ -51,12 +51,11 @@ function Login() {
   };
 
   return (
-    <div className="perfume-bg d-flex align-items-center justify-content-center min-vh-100">
-      <div className="row w-75 m-3 shadow-lg rounded-4 overflow-hidden perfume-card">
+    <div className="perfume-bg d-flex align-items-center rounded justify-content-center min-vh-100">
         {/* Panel Izquierdo - Registro */}
         <div className="col-md-6 p-5 border-end border-dark-subtle">
           <h3 className="text-center text-gold fw-bold mb-1">EL CÓDIGO PERFUMERIE</h3>
-          <p className="text-center text-muted mb-4">
+          <p className="text-center text-muted mb-4" onClick={() => navigate("/")}>
             ¿Ya tienes una cuenta?{" "}
             <span className="text-gold fw-semibold" style={{ cursor: "pointer" }}>
               Inicia sesión aquí
@@ -142,37 +141,8 @@ function Login() {
           </p>
         </div>
 
-        {/* Panel Derecho - Login */}
-        <div className="col-md-6 p-5 bg-dark">
-          <h3 className="text-gold fw-bold text-center mb-4">INICIA SESIÓN</h3>
-          <form onSubmit={handleLoginSubmit}>
-            <label className="form-label text-light">Usuario</label>
-            <input
-              type="text"
-              name="usuario"
-              className="form-control input-dark mb-3"
-              placeholder="Usuario"
-              onChange={handleLoginChange}
-            />
-            <label className="form-label text-light">Contraseña</label>
-            <input
-              type="password"
-              name="contraseña"
-              className="form-control input-dark mb-4"
-              placeholder="Contraseña"
-              onChange={handleLoginChange}
-            />
-            <button type="submit" className="btn btn-gold w-100 fw-bold py-2">
-              INICIAR SESIÓN
-            </button>
-          </form>
-          <p className="text-center text-muted small mt-4 mb-0">
-            © 2025 EL CÓDIGO PERFUMERIE. Todos los derechos reservados.
-          </p>
-        </div>
       </div>
-    </div>
   );
 }
 
-export default Login;
+export default Registro;

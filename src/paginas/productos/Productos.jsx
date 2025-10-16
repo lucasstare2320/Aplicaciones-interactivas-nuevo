@@ -174,29 +174,18 @@ const Productos = () => {
                     <aside className="col-md-3 text-white mb-4">
                         <h4 className="mb-3" style={{ color: "#d4af37" }}>Filtros</h4>
                         {/* Género */}
-                        <div className="mb-3">
-                            <label className="form-label">Género</label>
-                            <select
-                                className="form-select"
-                                value={selectedGender}
-                                onChange={(e) => setSelectedGender(e.target.value)}
-                            >
-                                <option value="Todos">Todos</option>
-                                <option value="Femenino">Femenino</option>
-                                <option value="Masculino">Masculino</option>
-                            </select>
-                        </div>
+
                         {/* Marca */}
                         <div className="mb-3">
-                            <label className="form-label">Marca</label>
+                            <label className="form-label">Categoria</label>
                             <select
                                 className="form-select"
                                 value={selectedBrand}
                                 onChange={(e) => setSelectedBrand(e.target.value)}
                             >
                                 <option value="Todas">Todas</option>
-                                {Array.from(new Set(productos.map((p) => p.brand))).map((brand) => (
-                                    <option key={brand} value={brand}>{brand}</option>
+                                {Array.from(new Set(productos.map((p) => p.type))).map((type) => (
+                                    <option key={type} value={type}>{type}</option>
                                 ))}
                             </select>
                         </div>
