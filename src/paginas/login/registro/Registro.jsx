@@ -2,52 +2,42 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
-import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { postUsuario } from "../../../REDUX/userSlide";
 function Registro() {
   const dispatch = useDispatch(); // esto es para redux
    const navigate = useNavigate()
-  const location = useLocation() // permite saber en que ruta estamos 
 
-  // ESTADOS LOCALES
-  const [registerData, setRegisterData] = useState({
-    nombre: "",
-    apellido: "",
-    usuario: "",
-    correo: "",
-    contraseña: "",
-    confirmar: "",
-  });
+  //use state login
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("") 
+  const [password, setPasword] = useState("")
+  const [confirm, setConfirm] = useState("")
+  const [mostrarMensaje, setMostrarMensaje] = useState(false)
 
-  const [loginData, setLoginData] = useState({
-    usuario: "",
-    contraseña: "",
-  });
-
-  // HANDLERS
-  // si tiene (e) significa que esta guardando el contenido de aquello que lo llama
-  // e se usa por la palabra "event"
-  const handleRegisterChange = (e) => {
-    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
-  };
-
-  const handleLoginChange = (e) => {
-    setLoginData({ ...loginData, [e.target.name]: e.target.value });
-  };
-
-  // a futuro esto va a tener una verificacion con el back
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    dispatch({ type: "LOGIN_SUCCESS", payload: { id: 1, nombre: loginData.usuario } });
-    alert("Login simulado enviado al reducer");
-    navigate("/landingpage")
-  };
 
   // aca va a ir el endpoint para POSTear un usuario
-  const handleRegisterSubmit = (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos de registro:", registerData);
-    alert("Registro simulado (solo front)");
+    console.log("hola")
+    const result = await dispatch(postUsuario({firstName,lastName,email,username,password}))
+    setFirstName("")
+    setLastName("")
+    setEmail("")
+    setUsername("")
+    setPasword("")
+    setConfirm("")
+
+      console.log(mostrarMensaje)
+      if (postUsuario.fulfilled.match(result)) {
+        console.log(mostrarMensaje)
+     navigate("/");
+    } else {
+      setMostrarMensaje(true);
+      console.log(mostrarMensaje)
+    }
   };
 
   return (
@@ -68,9 +58,14 @@ function Registro() {
                 <input
                   type="text"
                   name="nombre"
+                  value={firstName}
                   className="form-control input-dark"
                   placeholder="Nombre"
-                  onChange={handleRegisterChange}
+                  onChange={(e)=>{
+                    setFirstName(e.target.value)
+                    console.log(e.target.value)
+                  }
+                  }
                 />
               </div>
               <div className="col">
@@ -78,9 +73,14 @@ function Registro() {
                 <input
                   type="text"
                   name="apellido"
+                  value={lastName}
                   className="form-control input-dark"
                   placeholder="Apellido"
-                  onChange={handleRegisterChange}
+                  onChange={
+                    (e) => {
+                      setLastName(e.target.value)
+                    }
+                  }
                 />
               </div>
             </div>
@@ -90,9 +90,14 @@ function Registro() {
               <input
                 type="text"
                 name="usuario"
+                value={username}
                 className="form-control input-dark"
                 placeholder="usuario123"
-                onChange={handleRegisterChange}
+                onChange={
+                  (e) => {
+                    setUsername(e.target.value)
+                  }
+                }
               />
             </div>
 
@@ -101,9 +106,14 @@ function Registro() {
               <input
                 type="email"
                 name="correo"
+                valule={email}
                 className="form-control input-dark"
                 placeholder="tucorreo@email.com"
-                onChange={handleRegisterChange}
+                onChange={
+                  (e) => {
+                    setEmail(e.target.value)
+                  }
+                }
               />
             </div>
 
@@ -112,9 +122,15 @@ function Registro() {
               <input
                 type="password"
                 name="contraseña"
+                value={password}
                 className="form-control input-dark"
                 placeholder="********"
-                onChange={handleRegisterChange}
+                onChange={
+                  (e) => 
+                    {
+                    setPasword(e.target.value)
+                  }
+                }
               />
             </div>
 
@@ -123,13 +139,21 @@ function Registro() {
               <input
                 type="password"
                 name="confirmar"
+                value={confirm}
                 className="form-control input-dark"
                 placeholder="********"
-                onChange={handleRegisterChange}
+                onChange={ (e) => {setConfirm(e.target.value)
+
+                }
+
+                }
+                
               />
+              {mostrarMensaje ? <span>Usuario repetido</span> : <span></span>}
+              
             </div>
 
-            <button type="submit" className="btn btn-gold w-100 fw-bold py-2">
+            <button  type="submit" className="btn btn-gold w-100 fw-bold py-2">
               REGISTRARSE
             </button>
           </form>

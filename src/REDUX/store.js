@@ -1,8 +1,7 @@
-// store.js
-import { createStore } from 'redux';
-import counterReducer from './reducer';
+import { configureStore } from "@reduxjs/toolkit"
+import postReducer from "./userSlide"
 
-const store = createStore(counterReducer);
-
-export default store;
+export const store = configureStore({
+    reducer: {posts: postReducer}
+})
 
