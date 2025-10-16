@@ -3,6 +3,7 @@ package com.uade.keepstar.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import com.uade.keepstar.service.CategoryService;
 
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("category")
 public class CategoryController {
 

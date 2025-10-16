@@ -14,6 +14,7 @@ import com.uade.keepstar.exceptions.UserNotFoundException;
 import com.uade.keepstar.service.ProductService;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("products")
 public class ProductController {
 

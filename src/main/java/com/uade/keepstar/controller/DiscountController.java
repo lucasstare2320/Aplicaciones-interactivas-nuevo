@@ -8,6 +8,7 @@ import com.uade.keepstar.exceptions.ProductNotFoundException;
 import com.uade.keepstar.service.DescuentoService;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("discount")
 public class DiscountController {
 

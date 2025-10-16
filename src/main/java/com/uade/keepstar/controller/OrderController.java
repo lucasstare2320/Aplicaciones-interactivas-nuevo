@@ -4,6 +4,7 @@ package com.uade.keepstar.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.uade.keepstar.service.OrderService;
 
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("orders")
 public class OrderController {
 
