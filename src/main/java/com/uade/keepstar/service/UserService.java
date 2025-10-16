@@ -11,7 +11,8 @@ import com.uade.keepstar.exceptions.UserNotFoundException;
 public interface UserService {
     UserResponse registerUser(UserRequest request);
     UserResponse login(LoginRequest request) throws UnauthorizedException;
-    UserResponse actualizarUser(Long id, UserRequest request) throws UserNotFoundException;
-    List<UserResponse> getUsers();
+    List<UserResponse> getUsers();              
     UserResponse getUserById(Long id) throws UserNotFoundException;
+    UserResponse actualizarUser(Long id, UserRequest request) throws UserNotFoundException;
+    void deleteUser(Long id) throws UserNotFoundException;
 }

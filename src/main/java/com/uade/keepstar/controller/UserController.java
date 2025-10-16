@@ -34,4 +34,8 @@ public class UserController {
             throws UserNotFoundException {
         return userService.actualizarUser(id, request);
     }
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) throws UserNotFoundException {
+        userService.deleteUser(id);
+    }
 }

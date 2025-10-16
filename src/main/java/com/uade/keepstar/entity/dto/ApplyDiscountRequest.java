@@ -3,8 +3,9 @@ package com.uade.keepstar.entity.dto;
 import lombok.Data;
 
 @Data
-public class DescuentoRequest {
+
+public class ApplyDiscountRequest {
     private String code;
-    private int porcentaje;
-    private Long producto;     
+    private Double orderTotal; 
+    
 }

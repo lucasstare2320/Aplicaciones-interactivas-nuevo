@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -79,18 +77,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponse> getUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(UserResponse::new)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public UserResponse getUserById(Long id) throws UserNotFoundException {
-        User user = userRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
-        return new UserResponse(user);
+    @Transactional
+    public void deleteUser(Long id) throws UserNotFoundException {
+        var user = userRepository.findById(id)
+            .orElseThrow(UserNotFoundException::new);
+        if (!user.isActive()) return;   
+        user.setActive(false);
+        userRepository.save(user);
     }
 
 
@@ -127,5 +120,24 @@ public class UserServiceImpl implements UserService {
             userRepository.save(existing);
         }
         return new UserResponse(existing);
+    }
+
+    @Override
+    public List<UserResponse> getUsers() {
+        return userRepository.findByActiveTrue()
+                .stream()
+                .map(UserResponse::new)
+                .toList();
+    }
+
+    @Override
+    public UserResponse getUserById(Long id) throws UserNotFoundException { 
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+        if (!user.isActive()) {
+            throw new UserNotFoundException();
+        }
+        return new UserResponse(user);
+    
     }
 }

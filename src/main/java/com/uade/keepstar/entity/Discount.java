@@ -1,36 +1,30 @@
 package com.uade.keepstar.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-
-@Data
 @Entity
-@Builder
+@Table(name = "discounts", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_discounts_code", columnNames = "code")
+})
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 public class Discount {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+
+    @Column(nullable = false, length = 60, unique = true)
     private String code;
-    @Column
+
+    // porcentaje entero: 10 = 10%
+    @Column(nullable = false)
     private int porcentaje;
 
-    @ManyToOne (fetch = FetchType.EAGER)
-    @JoinColumn (name = "product_id", nullable= false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-
 }
