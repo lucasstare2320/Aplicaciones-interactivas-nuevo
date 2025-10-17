@@ -10,7 +10,6 @@ public class ProductRequest {
     private float price;
     private int stock;
     private Long categoryId;
-    private Long sellerId;
     private int discount;
 }
 

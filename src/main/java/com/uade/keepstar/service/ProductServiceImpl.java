@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.uade.keepstar.entity.Category;
 import com.uade.keepstar.entity.Product;
-import com.uade.keepstar.entity.User;
+
 import com.uade.keepstar.entity.dto.ProductRequest;
 import com.uade.keepstar.entity.dto.ProductResponse;
 import com.uade.keepstar.exceptions.CategoryNotFoundException;
@@ -18,7 +18,7 @@ import com.uade.keepstar.exceptions.ProductNotFoundException;
 import com.uade.keepstar.exceptions.UserNotFoundException;
 import com.uade.keepstar.repository.CategoryRepository;
 import com.uade.keepstar.repository.ProductRepository;
-import com.uade.keepstar.repository.UserRepository;
+
 
 import jakarta.transaction.Transactional;
 
@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired private ProductRepository productRepository;
     @Autowired private CategoryRepository categoryRepository;
-    @Autowired private UserRepository userRepository;
+
 
 @Override
 public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long categoryId) throws ProductNotFoundException {
@@ -54,6 +54,7 @@ public void deleteProduct(Long id) throws ProductNotFoundException {
     if (!product.isActive()) return;    
     product.setActive(false);
     productRepository.save(product);
+    
 }
 
     @Override
@@ -68,9 +69,6 @@ public void deleteProduct(Long id) throws ProductNotFoundException {
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(CategoryNotFoundException::new);
 
-        User seller = userRepository.findById(request.getSellerId())
-                .orElseThrow(UserNotFoundException::new);
-
         Product p = Product.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -78,7 +76,6 @@ public void deleteProduct(Long id) throws ProductNotFoundException {
                 .stock(request.getStock())
                 .active(true)
                 .category(category)
-                .seller(seller)
                 .discount(request.getDiscount())
                 .build();
 
@@ -123,17 +120,6 @@ public void deleteProduct(Long id) throws ProductNotFoundException {
                 changed = true;
             }
         }
-
-        if (request.getSellerId() != null) {
-            User newSeller = userRepository.findById(request.getSellerId())
-                    .orElseThrow(UserNotFoundException::new);
-            if (existing.getSeller() == null ||
-                !Objects.equals(existing.getSeller().getId(), newSeller.getId())) {
-                existing.setSeller(newSeller);
-                changed = true;
-            }
-        }
-
         Product saved = changed ? productRepository.save(existing) : existing;
         return new ProductResponse(saved);
     }

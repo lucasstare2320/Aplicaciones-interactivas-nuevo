@@ -20,8 +20,6 @@ public class ProductResponse {
     private Long categoryId;     // nuevo
     private String categoryName; // nuevo
 
-    private Long sellerId;       // útil para el front (opcional)
-    private String sellerName;   // si querés mostrarlo (opcional)
 
     public ProductResponse(Product product) {
         this.id = product.getId();
@@ -36,10 +34,7 @@ public class ProductResponse {
             this.categoryId = product.getCategory().getId();
             this.categoryName = product.getCategory().getName();
         }
-        if (product.getSeller() != null) {
-            this.sellerId = product.getSeller().getId();
-            this.sellerName = product.getSeller().getUsername(); 
-        }
+
     }
 
     public static ProductResponse of(Product p) {

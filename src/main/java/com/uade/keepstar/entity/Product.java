@@ -21,8 +21,7 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-  
+    private Long id;  
     @Column
     private String name;
     @Column
@@ -36,11 +35,7 @@ public class Product {
     private boolean active = true;
     @Column
     private int discount;
-
-    @ManyToOne (fetch = FetchType.EAGER)
-    @JoinColumn (name = "seller_id", nullable = false)
-    private User seller;
-    
+   
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "category_id", nullable = false)
     private Category category;
