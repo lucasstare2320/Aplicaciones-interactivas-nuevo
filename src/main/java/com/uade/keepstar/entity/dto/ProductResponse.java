@@ -15,11 +15,10 @@ public class ProductResponse {
     private float price;
     private int stock;
     private boolean active;
-    private int discount;      // nuevo
-
-    private Long categoryId;     // nuevo
-    private String categoryName; // nuevo
-
+    private Long categoryId;
+    private String categoryName;
+    private Integer discount;
+    private Integer images;
 
     public ProductResponse(Product product) {
         this.id = product.getId();
@@ -28,14 +27,13 @@ public class ProductResponse {
         this.price = product.getPrice();
         this.stock = product.getStock();
         this.active = product.isActive();
-        this.discount = product.getDiscount(); 
+        this.discount = product.getDiscount();
 
         if (product.getCategory() != null) {
             this.categoryId = product.getCategory().getId();
             this.categoryName = product.getCategory().getName();
         }
-
-    }
+   }
 
     public static ProductResponse of(Product p) {
         return new ProductResponse(p);

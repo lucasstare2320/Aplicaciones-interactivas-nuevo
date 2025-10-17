@@ -34,7 +34,7 @@ public class Product {
     @Column(nullable = false)
     private boolean active = true;
     @Column
-    private int discount;
+    private Integer discount;
    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "category_id", nullable = false)

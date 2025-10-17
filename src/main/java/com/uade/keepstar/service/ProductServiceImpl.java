@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.uade.keepstar.entity.Category;
 import com.uade.keepstar.entity.Product;
-
 import com.uade.keepstar.entity.dto.ProductRequest;
 import com.uade.keepstar.entity.dto.ProductResponse;
 import com.uade.keepstar.exceptions.CategoryNotFoundException;
@@ -17,8 +16,8 @@ import com.uade.keepstar.exceptions.DuplicateProductException;
 import com.uade.keepstar.exceptions.ProductNotFoundException;
 import com.uade.keepstar.exceptions.UserNotFoundException;
 import com.uade.keepstar.repository.CategoryRepository;
+import com.uade.keepstar.repository.ImageRepository;
 import com.uade.keepstar.repository.ProductRepository;
-
 
 import jakarta.transaction.Transactional;
 
@@ -27,45 +26,59 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired private ProductRepository productRepository;
     @Autowired private CategoryRepository categoryRepository;
+    @Autowired private ImageRepository imageRepository;
 
+    private ProductResponse toResponse(Product product) {
+        ProductResponse dto = new ProductResponse(product);
+        long count = imageRepository.countByProduct_Id(product.getId());
+        dto.setImages(count == 0 ? null : (int) count);
+        return dto;
+    }
 
-@Override
-public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long categoryId) throws ProductNotFoundException {
-    boolean noFilters = (minPrice == null && maxPrice == null && categoryId == null);
-    if (noFilters) {
-        return productRepository.findByActiveTrue().stream().map(ProductResponse::of).toList();
+    @Override
+    public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long categoryId)
+            throws ProductNotFoundException {
+        boolean noFilters = (minPrice == null && maxPrice == null && categoryId == null);
+        if (noFilters) {
+            return productRepository.findByActiveTrue()
+                    .stream()
+                    .map(this::toResponse) // antes ProductResponse::of
+                    .toList();
         }
-    return productRepository.findByOptionalFilters(minPrice, maxPrice, categoryId)
-            .stream().map(ProductResponse::of).toList();
-}
-   
-@Override
-public ProductResponse getIDList(Long id) throws ProductNotFoundException {
-    var product = productRepository.findByIdAndActiveTrue(id)
-            .orElseThrow(ProductNotFoundException::new);
-    return new ProductResponse(product);
-}
+        return productRepository.findByOptionalFilters(minPrice, maxPrice, categoryId)
+                .stream()
+                .map(this::toResponse) // antes ProductResponse::of
+                .toList();
+    }
 
-@Override
-@Transactional
-public void deleteProduct(Long id) throws ProductNotFoundException {
-    var product = productRepository.findById(id)
-            .orElseThrow(ProductNotFoundException::new);
-    if (!product.isActive()) return;    
-    product.setActive(false);
-    productRepository.save(product);
-    
-}
+    @Override
+    public ProductResponse getIDList(Long id) throws ProductNotFoundException {
+        var product = productRepository.findByIdAndActiveTrue(id)
+                .orElseThrow(ProductNotFoundException::new);
+        return toResponse(product); // antes new ProductResponse(product)
+    }
+
+    @Override
+    @Transactional
+    public void deleteProduct(Long id) throws ProductNotFoundException {
+        var product = productRepository.findById(id)
+                .orElseThrow(ProductNotFoundException::new);
+        if (!product.isActive()) return;
+        product.setActive(false);
+        productRepository.save(product);
+    }
 
     @Override
     @Transactional
     public ProductResponse crearProducto(ProductRequest request)
             throws CategoryNotFoundException, UserNotFoundException, DuplicateProductException {
 
-        Optional<Product > existing = productRepository.findByNameIgnoreCaseAndCategory_Id(request.getName(), request.getCategoryId());
+        Optional<Product> existing = productRepository
+                .findByNameIgnoreCaseAndCategory_Id(request.getName(), request.getCategoryId());
         if (existing.isPresent()) {
             throw new DuplicateProductException();
         }
+
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(CategoryNotFoundException::new);
 
@@ -80,7 +93,7 @@ public void deleteProduct(Long id) throws ProductNotFoundException {
                 .build();
 
         Product saved = productRepository.save(p);
-        return new ProductResponse(saved);
+        return toResponse(saved); // setea images
     }
 
     @Override
@@ -120,7 +133,8 @@ public void deleteProduct(Long id) throws ProductNotFoundException {
                 changed = true;
             }
         }
+
         Product saved = changed ? productRepository.save(existing) : existing;
-        return new ProductResponse(saved);
+        return toResponse(saved); // setea images
     }
 }
