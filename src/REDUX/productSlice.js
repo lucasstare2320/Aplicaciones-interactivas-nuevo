@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/products"; // 🔧 Cambia según tu servidor
+const BASE_URL = "http://localhost:8080/products"; 
 
 // 🔹 Obtener lista de productos con filtros opcionales
 export const fetchProducts = createAsyncThunk(

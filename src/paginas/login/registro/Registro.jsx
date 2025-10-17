@@ -21,7 +21,6 @@ function Registro() {
   // aca va a ir el endpoint para POSTear un usuario
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    console.log("hola")
     const result = await dispatch(postUsuario({firstName,lastName,email,username,password}))
     setFirstName("")
     setLastName("")

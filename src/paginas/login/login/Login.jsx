@@ -4,51 +4,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { loginUsuario } from "../../../REDUX/userSlice";
 function Login() {
-  const dispatch = useDispatch(); // esto es para redux
+  const dispatch = useDispatch(); 
    const navigate = useNavigate()
   const location = useLocation() // permite saber en que ruta estamos 
 
-  // ESTADOS LOCALES
-  const [registerData, setRegisterData] = useState({
-    nombre: "",
-    apellido: "",
-    usuario: "",
-    correo: "",
-    contraseña: "",
-    confirmar: "",
-  });
 
-  const [loginData, setLoginData] = useState({
-    usuario: "",
-    contraseña: "",
-  });
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault()
+    const result = await dispatch(loginUsuario({username,password}))
+    setUsername("")
+    setPassword("")
+  }
 
-  // HANDLERS
-  // si tiene (e) significa que esta guardando el contenido de aquello que lo llama
-  // e se usa por la palabra "event"
-  const handleRegisterChange = (e) => {
-    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
-  };
+  const [username, setUsername] = useState("")
 
-  const handleLoginChange = (e) => {
-    setLoginData({ ...loginData, [e.target.name]: e.target.value });
-  };
-
-  // a futuro esto va a tener una verificacion con el back
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    dispatch({ type: "LOGIN_SUCCESS", payload: { id: 1, nombre: loginData.usuario } });
-    alert("Login simulado enviado al reducer");
-    navigate("/landingpage")
-  };
-
-  // aca va a ir el endpoint para POSTear un usuario
-  const handleRegisterSubmit = (e) => {
-    e.preventDefault();
-    console.log("Datos de registro:", registerData);
-    alert("Registro simulado (solo front)");
-  };
+  const [password, setPassword] = useState("")
 
   return (
     <div className="perfume-bg d-flex align-items-center rounded justify-content-center min-vh-100">
@@ -63,7 +35,8 @@ function Login() {
               name="usuario"
               className="form-control input-dark mb-3"
               placeholder="Usuario"
-              onChange={handleLoginChange}
+              onChange={(e)=> {setUsername(e.target.value)}}
+              value = {username}
             />
             <label className="form-label text-light">Contraseña</label>
             <input
@@ -71,7 +44,8 @@ function Login() {
               name="contraseña"
               className="form-control input-dark mb-4"
               placeholder="Contraseña"
-              onChange={handleLoginChange}
+              onChange={(e)=> {setPassword(e.target.value)}}
+              value = {password}
             />
             <button type="submit" className="btn btn-gold w-100 fw-bold py-2">
               INICIAR SESIÓN
