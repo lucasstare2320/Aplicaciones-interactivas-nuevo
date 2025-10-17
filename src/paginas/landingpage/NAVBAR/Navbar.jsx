@@ -17,7 +17,7 @@ function Navbarperfume() {
   const prevCount = useRef(0);
   const firstRender = useRef(true); // <-- NUEVO: para evitar popup al montar
 
-  useEffect(() => {
+  /*useEffect(() => {
     const total = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
     // Evitar que se ejecute en el primer render
@@ -34,7 +34,7 @@ function Navbarperfume() {
     prevCount.current = total;
     setCartCount(total);
   }, [cartItems]);
-
+*/
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark sticky-top custom-navbar">
@@ -64,7 +64,7 @@ function Navbarperfume() {
           {/* Links */}
           <div className="collapse navbar-collapse" id="navbarPerfume">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-              {admin && (
+              
                 <li className="nav-item">
                   <span
                     className="nav-link"
@@ -73,7 +73,7 @@ function Navbarperfume() {
                     Mis Productos
                   </span>
                 </li>
-              )}
+              
 
               <li className="nav-item">
                 <span

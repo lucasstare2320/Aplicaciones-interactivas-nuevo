@@ -8,7 +8,7 @@ import Usuario from './perfil/Usuario'
 import Checkout from './checkout/Checkout'
 import Misproductos from './misproductos/Misproductos'
 import Login from './login/login/Login'
-import Registro from './login/registro/registro'
+import Registro from './login/registro/Registro'
 import Agregarproducto from './agregarproducto/AddProduct'
 //este componente sirve para hacer las rutas, es decir, cambiar entre paginas sin recargar
 // se pueden poner rutas en app pero en gral me gusta en un componente separado

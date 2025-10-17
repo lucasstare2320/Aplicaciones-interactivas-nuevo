@@ -8,7 +8,9 @@ export const postUsuario = createAsyncThunk("users/postUser", async(newuser) =>{
  const {data} = await axios.post(URL, newuser);
  console.log(data)
  return data
+ 
 })
+
 
 const userSlide = createSlice({
     name:"users",
