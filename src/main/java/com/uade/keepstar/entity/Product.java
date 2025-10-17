@@ -34,6 +34,8 @@ public class Product {
     @Builder.Default
     @Column(nullable = false)
     private boolean active = true;
+    @Column
+    private int discount;
 
     @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn (name = "seller_id", nullable = false)

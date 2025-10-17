@@ -15,6 +15,7 @@ public class ProductResponse {
     private float price;
     private int stock;
     private boolean active;
+    private int discount;      // nuevo
 
     private Long categoryId;     // nuevo
     private String categoryName; // nuevo
@@ -29,6 +30,7 @@ public class ProductResponse {
         this.price = product.getPrice();
         this.stock = product.getStock();
         this.active = product.isActive();
+        this.discount = product.getDiscount(); 
 
         if (product.getCategory() != null) {
             this.categoryId = product.getCategory().getId();
@@ -36,7 +38,7 @@ public class ProductResponse {
         }
         if (product.getSeller() != null) {
             this.sellerId = product.getSeller().getId();
-            this.sellerName = product.getSeller().getUsername(); // ajustá si el campo no es username
+            this.sellerName = product.getSeller().getUsername(); 
         }
     }
 

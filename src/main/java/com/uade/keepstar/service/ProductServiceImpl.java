@@ -39,25 +39,6 @@ public List<ProductResponse> getProducts(Double minPrice, Double maxPrice, Long 
             .stream().map(ProductResponse::of).toList();
 }
    
-        
-        
-        //List<ProductResponse > products =  productRepository.findAll().stream()
-        //        .map(ProductResponse::of)
-        //        .toList();
-        //        if (products.isEmpty()) {
-        //            throw new ProductNotFoundException ();
-         //       }
-          //      return products;
-    
-
-    //List<ProductResponse> products =  productRepository.findByOptionalFilters(minPrice, maxPrice, categoryId).stream()
-      //      .map(ProductResponse::of)
-        //    .toList();
-          //  if (products.isEmpty()) {
-            //    throw new ProductNotFoundException ();
-           // }
-            //return products;
-
 @Override
 public ProductResponse getIDList(Long id) throws ProductNotFoundException {
     var product = productRepository.findByIdAndActiveTrue(id)
@@ -87,7 +68,6 @@ public void deleteProduct(Long id) throws ProductNotFoundException {
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(CategoryNotFoundException::new);
 
-
         User seller = userRepository.findById(request.getSellerId())
                 .orElseThrow(UserNotFoundException::new);
 
@@ -99,6 +79,7 @@ public void deleteProduct(Long id) throws ProductNotFoundException {
                 .active(true)
                 .category(category)
                 .seller(seller)
+                .discount(request.getDiscount())
                 .build();
 
         Product saved = productRepository.save(p);

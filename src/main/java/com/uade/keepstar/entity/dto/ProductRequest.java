@@ -11,5 +11,6 @@ public class ProductRequest {
     private int stock;
     private Long categoryId;
     private Long sellerId;
+    private int discount;
 }
 
