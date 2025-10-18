@@ -1,7 +1,13 @@
 package com.uade.keepstar.entity.dto;
 
+import java.util.List;
+
 import com.uade.keepstar.entity.Product;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -18,8 +24,11 @@ public class ProductResponse {
     private Long categoryId;
     private String categoryName;
     private Integer discount;
-    private Integer images;
 
+    // >>> AHORA trae TODAS las imágenes del producto en base64
+    private List<String> images;
+
+    // Conservamos el constructor que usa Product (lo pedía tu implementación)
     public ProductResponse(Product product) {
         this.id = product.getId();
         this.name = product.getName();
@@ -27,15 +36,10 @@ public class ProductResponse {
         this.price = product.getPrice();
         this.stock = product.getStock();
         this.active = product.isActive();
+        this.categoryId = product.getCategory() != null ? product.getCategory().getId() : null;
+        this.categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
         this.discount = product.getDiscount();
-
-        if (product.getCategory() != null) {
-            this.categoryId = product.getCategory().getId();
-            this.categoryName = product.getCategory().getName();
-        }
-   }
-
-    public static ProductResponse of(Product p) {
-        return new ProductResponse(p);
+        // images se completa luego desde el service
     }
 }
+

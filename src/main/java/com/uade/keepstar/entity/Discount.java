@@ -19,8 +19,7 @@ public class Discount {
 
     @Column(nullable = false, length = 60, unique = true)
     private String code;
-
-    // porcentaje entero: 10 = 10%
+    
     @Column(nullable = false)
     private int porcentaje;
 

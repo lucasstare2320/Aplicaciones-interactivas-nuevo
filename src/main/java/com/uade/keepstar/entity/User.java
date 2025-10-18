@@ -59,6 +59,6 @@ public class User {
     @PrePersist
     void prePersist() {
         if (roles == null) roles = new ArrayList<>();
-        // active ya tiene default en @Builder.Default
+        
     }
 }

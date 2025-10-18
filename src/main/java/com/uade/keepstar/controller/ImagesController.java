@@ -11,7 +11,6 @@ import com.uade.keepstar.repository.ImageRepository;
 
 import java.io.IOException;
 import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class ImagesController {
     @CrossOrigin
     @GetMapping()
     public ResponseEntity<ImageResponse> displayImage(@RequestParam("id") long id)
-            throws IOException, SQLException {
+            throws IOException, Exception {
 
         Image image = imageService.viewById(id);
         String encodedString = Base64.getEncoder()
@@ -59,7 +58,7 @@ public class ImagesController {
         return imageRepository.findByProduct_IdOrderById(productId).stream()
             .map(img -> {
                 try {
-                    var blob = img.getImage();
+                    Blob blob = img.getImage();
                     byte[] bytes = blob.getBytes(1, (int) blob.length());
                     String b64 = Base64.getEncoder().encodeToString(bytes);
                     return ImageResponse.builder()
@@ -72,10 +71,11 @@ public class ImagesController {
             })
             .toList();
     }
+
     @PostMapping()
     public String addImagePost(AddFileRequest request,
                                @RequestParam("product_id") long productId)
-            throws IOException, SerialException, SQLException, ProductNotFoundException {
+            throws IOException, SerialException, Exception, ProductNotFoundException {
 
         byte[] bytes = request.getFile().getBytes();
         Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);

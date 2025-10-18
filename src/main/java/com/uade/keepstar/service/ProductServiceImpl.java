@@ -1,8 +1,9 @@
 package com.uade.keepstar.service;
 
+import java.sql.Blob;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,23 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductResponse toResponse(Product product) {
         ProductResponse dto = new ProductResponse(product);
-        long count = imageRepository.countByProduct_Id(product.getId());
-        dto.setImages(count == 0 ? null : (int) count);
+
+        // Traigo TODAS las imágenes del producto y las convierto a base64
+        List<String> imagesBase64 = imageRepository
+                .findByProduct_IdOrderById(product.getId())
+                .stream()
+                .map(img -> {
+                    try {
+                        Blob blob = img.getImage();
+                        byte[] bytes = blob.getBytes(1, (int) blob.length());
+                        return Base64.getEncoder().encodeToString(bytes);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error leyendo imagen id=" + img.getId(), e);
+                    }
+                })
+                .toList();
+
+        dto.setImages(imagesBase64);
         return dto;
     }
 
@@ -42,12 +58,12 @@ public class ProductServiceImpl implements ProductService {
         if (noFilters) {
             return productRepository.findByActiveTrue()
                     .stream()
-                    .map(this::toResponse) // antes ProductResponse::of
+                    .map(this::toResponse)
                     .toList();
         }
         return productRepository.findByOptionalFilters(minPrice, maxPrice, categoryId)
                 .stream()
-                .map(this::toResponse) // antes ProductResponse::of
+                .map(this::toResponse)
                 .toList();
     }
 
@@ -55,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getIDList(Long id) throws ProductNotFoundException {
         var product = productRepository.findByIdAndActiveTrue(id)
                 .orElseThrow(ProductNotFoundException::new);
-        return toResponse(product); // antes new ProductResponse(product)
+        return toResponse(product);
     }
 
     @Override
@@ -72,8 +88,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductResponse crearProducto(ProductRequest request)
             throws CategoryNotFoundException, UserNotFoundException, DuplicateProductException {
-
-        Optional<Product> existing = productRepository
+        var existing = productRepository
                 .findByNameIgnoreCaseAndCategory_Id(request.getName(), request.getCategoryId());
         if (existing.isPresent()) {
             throw new DuplicateProductException();
@@ -93,8 +108,9 @@ public class ProductServiceImpl implements ProductService {
                 .build();
 
         Product saved = productRepository.save(p);
-        return toResponse(saved); // setea images
+        return toResponse(saved);
     }
+
 
     @Override
     @Transactional
@@ -135,6 +151,6 @@ public class ProductServiceImpl implements ProductService {
         }
 
         Product saved = changed ? productRepository.save(existing) : existing;
-        return toResponse(saved); // setea images
+        return toResponse(saved);
     }
 }
