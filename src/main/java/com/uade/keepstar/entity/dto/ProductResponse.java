@@ -24,6 +24,7 @@ public class ProductResponse {
     private Long categoryId;
     private String categoryName;
     private Integer discount;
+    private String image;
 
     // >>> AHORA trae TODAS las imágenes del producto en base64
     private List<String> images;
@@ -38,8 +39,8 @@ public class ProductResponse {
         this.active = product.isActive();
         this.categoryId = product.getCategory() != null ? product.getCategory().getId() : null;
         this.categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
-        this.discount = product.getDiscount();
-        // images se completa luego desde el service
+        this.discount = product.getDiscount() == null ? 0 : product.getDiscount();
+        this.image = product.getImage();
     }
 }
 
