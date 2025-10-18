@@ -35,11 +35,13 @@ public class OrderController {
         return orderService.getOrder();
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     public OrderResponse getIDList(@PathVariable Long id) {
         return orderService.getIDList(id);
     }
 
+@CrossOrigin(origins = "*")
     @PostMapping
     public OrderResponse crearOrder(@RequestBody OrderRequest request)
             throws ProductNotFoundException, UserNotFoundException, ProductWithoutException {
